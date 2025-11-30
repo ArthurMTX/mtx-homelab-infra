@@ -1,0 +1,36 @@
+title: MTX's Homepage
+startUrl: https://home.mtx.dev
+base: https://home.mtx.dev
+favicon: https://status.mtx.dev/upload/logo1.png?t=1708373335123
+target: _blank
+hideVersion: true
+showStats: true
+
+headerStyle: boxed
+background:
+ image: https://file.mtx.dev/Aurora_from_space_RE_Soringal-7I1.jpg
+ opacity: 50
+ blur: sm
+theme: dark
+color: neutral
+cardBlur: sm
+
+quicklaunch:
+  searchDescriptions: true
+  hideInternetSearch: true
+  showSearchSuggestions: true
+  hideVisitURL: true
+
+layout:
+  Media:
+    style: row
+    columns: 4
+  Downloaders:
+    style: row
+    columns: 3
+  Utilities:
+    style: row
+    columns: 2
+
+providers:
+  finnhub: {{ homepage_finnhub_key }}

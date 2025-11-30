@@ -1,0 +1,45 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/service-widgets
+
+- resources:
+    label: System
+    cpu: true
+    memory: true
+    expanded: true
+    refresh: 1000
+
+- resources:
+    label: Filesystem
+    refresh: 1000
+    expanded: true
+    disk: /
+
+- resources:
+    label: Drive
+    refresh: 1000
+    expanded: true
+    disk: /mnt/storage
+
+- openmeteo:
+    label: Nîmes
+    latitude: 44.128101
+    longitude: 4.081700
+    timezone: Europe/Paris
+    units: metric
+    cache: 5
+    format:
+      maximumFractionDigits: 2
+
+- search:
+    provider: google
+    target: _blank
+    showSearchSuggestions: true
+
+- datetime:
+    locale: gb
+    text_size: md
+    format:
+      dateStyle: long
+      timeStyle: long
+      hour12: true

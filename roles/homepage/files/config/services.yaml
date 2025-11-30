@@ -1,0 +1,102 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/services
+
+- Security/Monitoring:
+    - Traefik:
+        href: https://monitor.mtx.dev
+        icon: traefik
+        container: traefik
+        widget:
+          type: traefik
+          url: https://monitor.mtx.dev
+          username: {{ homepage_traefik_user }}
+          password: {{ homepage_traefik_password }}
+
+    - Portainer:
+        href: https://portainer.mtx.dev
+        icon: portainer
+        container: portainer-portainer-1
+        widget:
+          type: portainer
+          url: https://portainer.mtx.dev
+          env: 1
+          key: {{ homepage_portainer_key }}
+
+    - Uptime Kuma:
+        href: https://status.mtx.dev
+        icon: uptime-kuma
+        container: uptime-kuma
+        widget:
+          type: uptimekuma
+          url: https://status.mtx.dev
+          slug: global
+
+    - Minecraft:
+        icon: minecraft
+        widget:
+          type: minecraft
+          url: udp://91.197.6.140:25685
+
+    - Stocks:
+        icon: nextcloud-cospend
+        widget:
+          type: stocks
+          provider: finnhub
+          showUSMarketStatus: true
+          watchlist:
+            - AMS
+            - S
+            - NVDA
+            - AMD
+            - MSTR
+            - INTC
+            - REGN
+
+- Medias:
+    - Spotify:
+        icon: spotify
+        widget:
+          type: customapi
+          url: https://ai.mtx.dev/webhook/spotify_current_listening
+          refreshInterval: 10000
+          method: GET
+          mappings:
+            - field: title
+              label: Song Name
+              format: text
+            - field: artist
+              label: Artist Name
+              format: text
+            - field: album
+              label: Album Name
+              format: text
+            - field: cover
+              label: Album Cover
+              format: image
+
+    - Calendar:
+        icon: google-calendar
+        widget:
+          type: calendar
+          firstDayInWeek: monday
+          view: monthly
+          maxEvents: 10
+          showTime: true
+          timezone: Europe/Paris
+          integrations:
+             - type: ical
+               url: https://calendar.google.com/calendar/ical/itsmitralyx%40gmail.com/private-a28ba91b800205358401028092ebb63a/basic.ics
+               name: My Events (mtx)
+               color: green
+               showName: true
+
+    - Cryptocurrencies:
+        icon: bitcoin
+        href: https://www.tradingview.com/chart/6N07PVg1/?symbol=BITSTAMP%3ABTCUSD
+        widget:
+          type: coinmarketcap
+          currency: USD
+          symbols: [BTC, SOL, ETH, XRP, DOGE]
+          key: {{ homepage_coinmarketcap_key }}
+          defaultinterval: 7d

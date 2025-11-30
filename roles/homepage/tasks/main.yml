@@ -1,6 +1,6 @@
 ---
 - name: Ensure homepage directory exists
-  file:
+  ansible.builtin.file:
     path: "{{ docker_config_root }}/homepage"
     state: directory
     owner: root
@@ -8,7 +8,7 @@
     mode: "0750"
 
 - name: Ensure config directory exists
-  file:
+  ansible.builtin.file:
     path: "{{ docker_config_root }}/homepage/config"
     state: directory
     owner: root
@@ -16,15 +16,33 @@
     mode: "0750"
 
 - name: Deploy docker-compose.yml
-  template:
+  ansible.builtin.template:
     src: docker-compose.yml.j2
     dest: "{{ docker_config_root }}/homepage/docker-compose.yml"
     owner: root
     group: root
     mode: "0640"
 
-- name: Bring up homepage stack (using docker compose v2)
+- name: Sync homepage config files
+  ansible.builtin.copy:
+    src: "config/"
+    dest: "{{ docker_config_root }}/homepage/config/"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart homepage
+
+- name: Bring up homepage stack
   community.docker.docker_compose_v2:
     project_src: "{{ docker_config_root }}/homepage"
     state: present
     recreate: auto
+
+- name: Deploy homepage env file
+  ansible.builtin.template:
+    src: homepage.env.j2
+    dest: "{{ docker_config_root }}/homepage/.env"
+    owner: root
+    group: root
+    mode: "0600"
+  notify: Restart homepage

@@ -1,0 +1,49 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/bookmarks
+
+- Developer:
+    - GitHub:
+        - abbr: GH
+          href: https://github.com/arthurmtx
+          icon: github
+    - OVH:
+        - abbr: OV
+          href: https://ovh.com/manager/#/web/zone/mtx.dev
+          icon: ovh
+    - OCI:
+        - abbr: OC
+          href: https://cloud.oracle.com/?region=eu-marseille-1
+          icon: oracle
+    - Cloudflare:
+        - abbr: CL
+          href: https://dash.cloudflare.com/caf15e861d8ae23cc371d8d975c7e555/mtx.dev/analytics/traffic
+          icon: cloudflare
+    - Hostinger:
+        - abbr: HO
+          href: https://hpanel.hostinger.com/email/mtx.dev/accounts
+          icon: https://iconape.com/wp-content/png_logo_vector/hostinger.png
+    - Hetzner:
+        - abbr: HE
+          href: https://robot.hetzner.com/storage
+          icon: hetzner
+    - Crowdsec:
+        - abbr: CR
+          href: https://app.crowdsec.net/alerts
+          icon: crowdsec
+
+- Social:
+    - Proton Mail:
+        - abbr: PR
+          href: https://mail.proton.me/u/6/inbox
+          icon: proton-mail
+    - Gmail:
+        - abbr: GM
+          href: https://mail.google.com/mail/u/0/#inbox
+          icon: gmail
+
+- Crypto:
+    - Finary:
+        - abbr: FI
+          href: https://app.finary.com/v2
+          icon: https://prod-chadatalake.s3.eu-west-3.amazonaws.com/startups/9fb1d928-7fbf-44bb-9cb7-b71aab6852c7.png
