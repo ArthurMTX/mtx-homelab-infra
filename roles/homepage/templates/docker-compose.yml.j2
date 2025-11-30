@@ -1,0 +1,25 @@
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+
+    environment:
+      HOMEPAGE_ALLOWED_HOSTS: "{{ homepage_allowed_hosts }}"
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homepage.rule=Host(`{{ homepage_hostname }}`)"
+      - "traefik.http.routers.homepage.entrypoints=websecure"
+      - "traefik.http.routers.homepage.tls.certresolver=lets-encrypt"
+
+    volumes:
+      - "{{ docker_config_root }}/homepage/config:/app/config"
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /mnt/storage:/mnt/storage
+
+    networks:
+      - web
+
+networks:
+  web:
+    external: true

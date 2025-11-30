@@ -1,0 +1,30 @@
+# Ansible-related files
+.vault_pass.txt
+*.retry
+
+# Key files
+*.pem
+*.key
+id_rsa
+id_ed25519
+
+# Local inventory files
+inventory.local.ini
+
+# VSCode settings
+.vscode/
+
+# MacOS files
+.DS_Store
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+env/
+venv/
+ENV/
+.venv/
+env.bak/
+venv.bak/

@@ -1,0 +1,30 @@
+---
+- name: Ensure homepage directory exists
+  file:
+    path: "{{ docker_config_root }}/homepage"
+    state: directory
+    owner: root
+    group: root
+    mode: "0750"
+
+- name: Ensure config directory exists
+  file:
+    path: "{{ docker_config_root }}/homepage/config"
+    state: directory
+    owner: root
+    group: root
+    mode: "0750"
+
+- name: Deploy docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ docker_config_root }}/homepage/docker-compose.yml"
+    owner: root
+    group: root
+    mode: "0640"
+
+- name: Bring up homepage stack (using docker compose v2)
+  community.docker.docker_compose_v2:
+    project_src: "{{ docker_config_root }}/homepage"
+    state: present
+    recreate: auto
