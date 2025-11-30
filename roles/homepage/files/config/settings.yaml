@@ -33,4 +33,4 @@ layout:
     columns: 2
 
 providers:
-  finnhub: {{ homepage_finnhub_key }}
+  finnhub: {{HOMEPAGE_VAR_FINNHUB_KEY}}

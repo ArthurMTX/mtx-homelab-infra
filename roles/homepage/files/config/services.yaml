@@ -10,8 +10,8 @@
         widget:
           type: traefik
           url: https://monitor.mtx.dev
-          username: {{ homepage_traefik_user }}
-          password: {{ homepage_traefik_password }}
+          username: {{HOMEPAGE_VAR_TRAEFIK_USER}}
+          password: {{HOMEPAGE_VAR_TRAEFIK_PASSWORD}}
 
     - Portainer:
         href: https://portainer.mtx.dev
@@ -21,7 +21,7 @@
           type: portainer
           url: https://portainer.mtx.dev
           env: 1
-          key: {{ homepage_portainer_key }}
+          key: {{HOMEPAGE_VAR_PORTAINER_KEY}}
 
     - Uptime Kuma:
         href: https://status.mtx.dev
@@ -98,5 +98,5 @@
           type: coinmarketcap
           currency: USD
           symbols: [BTC, SOL, ETH, XRP, DOGE]
-          key: {{ homepage_coinmarketcap_key }}
+          key: {{HOMEPAGE_VAR_COINMARKETCAP_KEY}}
           defaultinterval: 7d
