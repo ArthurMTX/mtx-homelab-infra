@@ -1,0 +1,6 @@
+- name: Restart portainer
+  community.docker.docker_compose_v2:
+    project_src: "{{ docker_config_root }}/portainer"
+    state: present
+    recreate: always
+    remove_orphans: true

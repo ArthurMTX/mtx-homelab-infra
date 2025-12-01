@@ -13,3 +13,4 @@
     - { role: homepage, tags: ["homepage"] }
     - { role: uptime_kuma, tags: ["uptime_kuma", "monitoring"] }
     - { role: apache, tags: ["apache", "web"] }
+    - { role: portainer, tags: ["portainer"] }

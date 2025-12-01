@@ -5,3 +5,5 @@ ports:
     http: 3001
   apache:
     http: 80
+  portainer:
+    http: 9000

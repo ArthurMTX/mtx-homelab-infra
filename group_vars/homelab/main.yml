@@ -7,5 +7,7 @@ uptime_kuma_hostname: "status.mtx.dev"
 
 apache_hostname: "mtx.dev"
 
+portainer_hostname: "portainer.mtx.dev"
+
 timezone: "Europe/Paris"
 domain: "mtx.dev"
