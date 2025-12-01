@@ -1,0 +1,46 @@
+[entryPoints]
+  [entryPoints.web]
+    address = ":{{ ports.traefik.http }}"
+    [entryPoints.web.http.redirections.entryPoint]
+      to = "websecure"
+      scheme = "{{ ports.traefik.https }}"
+
+  [entryPoints.websecure]
+    address = ":{{ ports.traefik.https }}"
+
+    [entryPoints.websecure.http]
+      middlewares = ["crowdsec-bouncer@file"]
+
+  [entryPoints.openvpn]
+    address = ":{{ ports.traefik.openvpn }}/udp"
+
+  [entryPoints.database]
+    address = ":{{ ports.traefik.database }}"
+
+[api]
+  dashboard = true
+
+[certificatesResolvers.lets-encrypt.acme]
+  email = "{{ traefik_acme_email }}"
+  storage = "acme.json"
+[certificatesResolvers.lets-encrypt.acme.tlsChallenge]
+
+[providers.docker]
+  watch = true
+  network = "web"
+
+[providers.file]
+  filename = "traefik_dynamic.toml"
+
+[tls.stores]
+  [tls.stores.default.defaultGeneratedCert]
+    resolver = "lets-encrypt"
+    [tls.stores.default.defaultGeneratedCert.domain]
+      main = "{{ traefik_hostname }}"
+
+[log]
+  level = "INFO"
+  filePath = "/var/log/traefik/traefik.log"
+
+[accessLog]
+  filePath = "/var/log/traefik/traefik-access.log"

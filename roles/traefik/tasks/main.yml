@@ -1,0 +1,56 @@
+- name: Ensure traefik base directory exists
+  ansible.builtin.file:
+    path: "{{ docker_config_root }}/traefik"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Ensure traefik log directory exists
+  ansible.builtin.file:
+    path: "{{ docker_config_root }}/traefik/log"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Ensure acme.json exists with correct permissions
+  ansible.builtin.file:
+    path: "{{ docker_config_root }}/traefik/acme.json"
+    state: touch
+    owner: root
+    group: root
+    mode: "0600"
+
+- name: Deploy traefik static config
+  ansible.builtin.template:
+    src: traefik.toml.j2
+    dest: "{{ docker_config_root }}/traefik/traefik.toml"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart traefik
+
+- name: Deploy traefik dynamic config
+  ansible.builtin.template:
+    src: traefik_dynamic.toml.j2
+    dest: "{{ docker_config_root }}/traefik/traefik_dynamic.toml"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart traefik
+
+- name: Deploy traefik docker-compose.yml
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ docker_config_root }}/traefik/docker-compose.yml"
+    owner: root
+    group: root
+    mode: "0640"
+  notify: Restart traefik
+
+- name: Ensure traefik stack is running
+  community.docker.docker_compose_v2:
+    project_src: "{{ docker_config_root }}/traefik"
+    state: present
+    recreate: never

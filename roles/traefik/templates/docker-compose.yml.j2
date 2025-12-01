@@ -1,0 +1,25 @@
+services:
+  traefik:
+    image: traefik:v2.2
+    container_name: traefik
+    restart: unless-stopped
+
+    networks:
+      - web
+
+    ports:
+      - "{{ ports.traefik.http }}:{{ ports.traefik.http }}"
+      - "{{ ports.traefik.https }}:{{ ports.traefik.https }}"
+      - "{{ ports.traefik.openvpn }}:{{ ports.traefik.openvpn }}/udp"
+      - "{{ ports.traefik.database }}:{{ ports.traefik.database }}"
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - "{{ docker_config_root }}/traefik/traefik.toml:/traefik.toml"
+      - "{{ docker_config_root }}/traefik/traefik_dynamic.toml:/traefik_dynamic.toml"
+      - "{{ docker_config_root }}/traefik/acme.json:/acme.json"
+      - "{{ docker_config_root }}/traefik/log:/var/log"
+
+networks:
+  web:
+    external: true

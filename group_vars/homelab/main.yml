@@ -9,5 +9,9 @@ apache_hostname: "mtx.dev"
 
 portainer_hostname: "portainer.mtx.dev"
 
+traefik_hostname: "monitor.mtx.dev"
+
+vpn_hostname: "vpn.mtx.dev"
+
 timezone: "Europe/Paris"
 domain: "mtx.dev"

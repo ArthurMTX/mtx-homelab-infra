@@ -7,3 +7,8 @@ ports:
     http: 80
   portainer:
     http: 9000
+  traefik:
+    http: 80
+    https: 443
+    openvpn: 1194
+    database: 5010
