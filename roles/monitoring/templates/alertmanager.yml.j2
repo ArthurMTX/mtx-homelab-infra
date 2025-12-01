@@ -1,0 +1,23 @@
+global:
+  resolve_timeout: 5m
+
+route:
+  receiver: "all"
+  group_by: ["alertname"]
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 1h
+
+receivers:
+  - name: "all"
+    webhook_configs:
+      - url: "http://alertrelay:8080/discord"
+        send_resolved: true
+      - url: "http://alertrelay:8080/free"
+        send_resolved: false
+    email_configs:
+      - to: "{{ alertmanager_email_to }}"
+        from: "{{ alertmanager_email_from }}"
+        smarthost: "{{ alertmanager_smtp_host }}"
+        auth_username: "{{ alertmanager_smtp_username }}"
+        auth_password: "{{ alertmanager_smtp_password }}"

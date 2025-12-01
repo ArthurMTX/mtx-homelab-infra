@@ -1,0 +1,73 @@
+- name: Ensure monitoring base directory exists
+  ansible.builtin.file:
+    path: "{{ docker_config_root }}/monitoring"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Sync monitoring static config (prometheus, loki, promtail, alertmanager, alertrelay code)
+  ansible.builtin.copy:
+    src: "./"
+    dest: "{{ docker_config_root }}/monitoring"
+    owner: root
+    group: root
+    mode: "0644"
+  args:
+    directory_mode: "0755"
+  notify: Restart monitoring stack
+
+- name: Ensure monitoring data directories exist
+  ansible.builtin.file:
+    path: "{{ docker_config_root }}/monitoring/data/{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  loop:
+    - prometheus
+    - alertmanager
+    - grafana
+    - loki
+    - promtail
+
+- name: Ensure alertmanager config directory exists
+  ansible.builtin.file:
+    path: "{{ docker_config_root }}/monitoring/alertmanager"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Deploy alertmanager config
+  ansible.builtin.template:
+    src: alertmanager.yml.j2
+    dest: "{{ docker_config_root }}/monitoring/alertmanager/alertmanager.yml"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart monitoring stack
+
+- name: Deploy alertrelay env file
+  ansible.builtin.template:
+    src: alertrelay.env.j2
+    dest: "{{ docker_config_root }}/monitoring/alertrelay/.env"
+    owner: root
+    group: root
+    mode: "0600"
+  notify: Restart monitoring stack
+
+- name: Deploy monitoring docker-compose.yml
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ docker_config_root }}/monitoring/docker-compose.yml"
+    owner: root
+    group: root
+    mode: "0640"
+  notify: Restart monitoring stack
+
+- name: Ensure monitoring stack is running
+  community.docker.docker_compose_v2:
+    project_src: "{{ docker_config_root }}/monitoring"
+    state: present
+    recreate: never

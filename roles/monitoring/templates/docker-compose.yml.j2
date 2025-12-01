@@ -1,0 +1,132 @@
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - "{{ docker_config_root }}/monitoring/prometheus:/etc/prometheus:ro"
+      - "{{ docker_config_root }}/monitoring/data/prometheus:/prometheus"
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.enable-lifecycle
+    ports:
+      - "127.0.0.1:{{ ports.prometheus.http }}:9090"
+    networks:
+      - monitoring
+
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: alertmanager
+    restart: unless-stopped
+    volumes:
+      - "{{ docker_config_root }}/monitoring/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro"
+      - "{{ docker_config_root }}/monitoring/data/alertmanager:/alertmanager"
+    command:
+      - --config.file=/etc/alertmanager/alertmanager.yml
+    ports:
+      - "127.0.0.1:{{ ports.alertmanager.http }}:9093"
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    user: "0"
+    volumes:
+      - "{{ docker_config_root }}/monitoring/data/grafana:/var/lib/grafana"
+    environment:
+      GF_SECURITY_ADMIN_USER: "{{ grafana_admin_user }}"
+      GF_SECURITY_ADMIN_PASSWORD: "{{ grafana_admin_password }}"
+      GF_SERVER_ROOT_URL: "https://{{ grafana_hostname }}/"
+    ports:
+      - "127.0.0.1:{{ ports.grafana.http }}:3000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`{{ grafana_hostname }}`)"
+      - "traefik.http.routers.grafana.entrypoints=websecure"
+      - "traefik.http.routers.grafana.tls.certresolver=lets-encrypt"
+    networks:
+      - monitoring
+      - web
+    depends_on:
+      - prometheus
+      - loki
+
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    restart: unless-stopped
+    command: -config.file=/etc/loki/config.yml
+    volumes:
+      - "{{ docker_config_root }}/monitoring/loki/loki-config.yml:/etc/loki/config.yml:ro"
+      - "{{ docker_config_root }}/monitoring/data/loki:/loki"
+    ports:
+      - "127.0.0.1:{{ ports.loki.http }}:3100"
+    networks:
+      - monitoring
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    restart: unless-stopped
+    command: -config.file=/etc/promtail/config.yml
+    volumes:
+      - /var/log:/var/log:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /etc/machine-id:/etc/machine-id:ro
+      - "{{ docker_config_root }}/monitoring/promtail/promtail-config.yml:/etc/promtail/config.yml:ro"
+      - "{{ docker_config_root }}/monitoring/data/promtail:/positions"
+    networks:
+      - monitoring
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    restart: unless-stopped
+    pid: "host"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - --path.procfs=/host/proc
+      - --path.sysfs=/host/sys
+      - --path.rootfs=/rootfs
+      - --collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)
+    ports:
+      - "127.0.0.1:{{ ports.node_exporter.http }}:9100"
+    networks:
+      - monitoring
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    restart: unless-stopped
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+    ports:
+      - "127.0.0.1:{{ ports.cadvisor.http }}:8080"
+    networks:
+      - monitoring
+
+  alertrelay:
+    build: "{{ docker_config_root }}/monitoring/alertrelay"
+    container_name: alertrelay
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:{{ ports.alertrelay.http }}:8080"
+    env_file:
+      - "{{ docker_config_root }}/monitoring/alertrelay/.env"
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge
+  web:
+    external: true

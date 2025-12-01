@@ -17,5 +17,7 @@ database_hostname: "database.mtx.dev"
 
 metabase_hostname: "metabase.mtx.dev"
 
+grafana_hostname: "grafana.mtx.dev"
+
 timezone: "Europe/Paris"
 domain: "mtx.dev"

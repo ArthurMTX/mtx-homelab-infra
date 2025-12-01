@@ -20,3 +20,17 @@ ports:
     http: 8080
   metabase:
     http: 3000
+  prometheus:
+    http: 9090
+  alertmanager:
+    http: 9093
+  grafana:
+    http: 3000
+  loki:
+    http: 3100
+  node_exporter:
+    http: 9100
+  cadvisor:
+    http: 8081
+  alertrelay:
+    http: 8082
