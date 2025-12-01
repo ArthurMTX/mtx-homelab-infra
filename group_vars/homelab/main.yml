@@ -3,5 +3,7 @@ docker_config_root: "/etc/docker"
 homepage_hostname: "home.mtx.dev"
 homepage_allowed_hosts: "home.mtx.dev"
 
+uptime_kuma_hostname: "status.mtx.dev"
+
 timezone: "Europe/Paris"
 domain: "mtx.dev"

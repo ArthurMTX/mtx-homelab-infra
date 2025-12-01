@@ -1,0 +1,30 @@
+- name: Ensure uptime-kuma directory exists
+  ansible.builtin.file:
+    path: "{{ docker_config_root }}/uptime-kuma"
+    state: directory
+    owner: root
+    group: root
+    mode: "0750"
+
+- name: Ensure uptime-kuma data directory exists
+  ansible.builtin.file:
+    path: "{{ docker_config_root }}/uptime-kuma/data"
+    state: directory
+    owner: root
+    group: root
+    mode: "0750"
+
+- name: Deploy uptime-kuma docker-compose.yml
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ docker_config_root }}/uptime-kuma/docker-compose.yml"
+    owner: root
+    group: root
+    mode: "0640"
+  notify: Restart uptime-kuma
+
+- name: Ensure uptime-kuma stack is running
+  community.docker.docker_compose_v2:
+    project_src: "{{ docker_config_root }}/uptime-kuma"
+    state: present
+    recreate: never

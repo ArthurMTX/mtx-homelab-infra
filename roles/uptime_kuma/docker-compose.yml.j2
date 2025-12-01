@@ -1,0 +1,27 @@
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:2.0.2
+    container_name: uptime-kuma
+    restart: unless-stopped
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.uptime-kuma.rule=Host(`{{ uptime_kuma_hostname }}`)"
+      - "traefik.http.routers.uptime-kuma.entrypoints=websecure"
+      - "traefik.http.routers.uptime-kuma.tls.certresolver=lets-encrypt"
+      - "traefik.http.routers.uptime-kuma.tls=true"
+      - "traefik.http.services.uptime-kuma.loadBalancer.server.port=3001"
+
+    volumes:
+      - "{{ docker_config_root }}/uptime-kuma/data:/app/data"
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    networks:
+      - web
+
+    environment:
+      UPTIME_KUMA_DISABLE_FRAME_SAMEORIGIN: "true"
+
+networks:
+  web:
+    external: true

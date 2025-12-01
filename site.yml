@@ -10,5 +10,5 @@
         state: present
 
   roles:
-    - role: homepage
-      tags: ["homepage"]
+    - { role: homepage, tags: ["homepage"] }
+    - { role: uptime_kuma, tags: ["uptime_kuma", "monitoring"] }
