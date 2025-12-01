@@ -4,9 +4,6 @@ services:
     container_name: apache-web
     restart: always
 
-    ports:
-      - "8080:80"
-
     volumes:
       - "{{ docker_config_root }}/apache/web:/var/www/html"
 
@@ -18,6 +15,8 @@ services:
       - "traefik.http.routers.web.rule=Host(`{{ apache_hostname }}`)"
       - "traefik.http.routers.web.entrypoints=websecure"
       - "traefik.http.routers.web.tls.certresolver=lets-encrypt"
+      - "traefik.http.routers.web.tls=true"
+      - "traefik.http.services.web.loadBalancer.server.port={{ ports.apache.http }}"
 
     networks:
       - web

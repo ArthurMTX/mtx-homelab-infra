@@ -14,6 +14,8 @@ services:
       - "traefik.http.routers.homepage.rule=Host(`{{ homepage_hostname }}`)"
       - "traefik.http.routers.homepage.entrypoints=websecure"
       - "traefik.http.routers.homepage.tls.certresolver=lets-encrypt"
+      - "traefik.http.routers.homepage.tls=true"
+      - "traefik.http.services.homepage.loadBalancer.server.port={{ ports.homepage.http }}"
 
     volumes:
       - "{{ docker_config_root }}/homepage/config:/app/config"

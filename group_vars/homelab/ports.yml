@@ -1,0 +1,7 @@
+ports:
+  homepage:
+    http: 3000
+  uptime_kuma:
+    http: 3001
+  apache:
+    http: 8080
