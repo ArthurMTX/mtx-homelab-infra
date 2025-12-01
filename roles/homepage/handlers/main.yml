@@ -1,5 +1,6 @@
----
 - name: Restart homepage
   community.docker.docker_compose_v2:
     project_src: "{{ docker_config_root }}/homepage"
-    state: restarted
+    state: present
+    recreate: auto
+    remove_orphans: true
