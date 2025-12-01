@@ -13,5 +13,7 @@ traefik_hostname: "monitor.mtx.dev"
 
 vpn_hostname: "vpn.mtx.dev"
 
+database_hostname: "database.mtx.dev"
+
 timezone: "Europe/Paris"
 domain: "mtx.dev"

@@ -12,3 +12,7 @@ ports:
     https: 443
     openvpn: 1194
     database: 5010
+  database:
+    tcp: 5432 
+  pgadmin:
+    http: 80

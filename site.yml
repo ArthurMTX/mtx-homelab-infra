@@ -15,3 +15,4 @@
     - { role: apache, tags: ["apache", "web"] }
     - { role: portainer, tags: ["portainer"] }
     - { role: traefik, tags: ["traefik"] }
+    - { role: database,  tags: ["database"] }
