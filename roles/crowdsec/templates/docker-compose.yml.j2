@@ -1,0 +1,43 @@
+services:
+  crowdsec:
+    image: crowdsecurity/crowdsec:latest
+    container_name: crowdsec
+    restart: unless-stopped
+    environment:
+      - COLLECTIONS=crowdsecurity/traefik crowdsecurity/http-cve crowdsecurity/whitelist-good-actors crowdsecurity/iptables crowdsecurity/linux crowdsecurity/nginx crowdsecurity/sshd
+      - CUSTOM_HOSTNAME=crowdsec
+    volumes:
+      - crowdsec_config:/etc/crowdsec
+      - crowdsec_db:/var/lib/crowdsec/data
+      - "{{ docker_config_root }}/crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml:rw"
+      - /var/log/:/var/log:rw
+      - "{{ docker_config_root }}/traefik/log/traefik/:/var/log/traefik:rw"
+    networks:
+      - web
+
+  crowdsec-bouncer:
+    image: fbonalair/traefik-crowdsec-bouncer:latest
+    container_name: crowdsec-bouncer
+    restart: unless-stopped
+    user: nonroot
+    environment:
+      CROWDSEC_BOUNCER_API_KEY: {{ crowdsec_bouncer_api_key }}
+      CROWDSEC_AGENT_HOST: crowdsec:{{ ports.crowdsec.http }}
+      SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
+    healthcheck:
+      test: ["CMD", "/healthchecker"]
+      interval: 10s
+      timeout: 5s
+      retries: 2
+    networks:
+      - web
+    expose:
+      - "{{ ports.crowdsec.http }}"
+
+networks:
+  web:
+    external: true
+
+volumes:
+  crowdsec_config:
+  crowdsec_db:

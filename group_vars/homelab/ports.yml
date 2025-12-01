@@ -16,3 +16,7 @@ ports:
     tcp: 5432 
   pgadmin:
     http: 80
+  crowdsec:
+    http: 8080
+  metabase:
+    http: 3000

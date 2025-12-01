@@ -1,0 +1,22 @@
+- name: Ensure metabase project directory exists
+  ansible.builtin.file:
+    path: "{{ docker_config_root }}/metabase"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Deploy metabase docker-compose.yml
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ docker_config_root }}/metabase/docker-compose.yml"
+    owner: root
+    group: root
+    mode: "0640"
+  notify: Restart metabase
+
+- name: Ensure metabase stack is running
+  community.docker.docker_compose_v2:
+    project_src: "{{ docker_config_root }}/metabase"
+    state: present
+    recreate: never

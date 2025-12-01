@@ -15,4 +15,6 @@
     - { role: apache, tags: ["apache", "web"] }
     - { role: portainer, tags: ["portainer"] }
     - { role: traefik, tags: ["traefik"] }
-    - { role: database,  tags: ["database"] }
+    - { role: database, tags: ["database"] }
+    - { role: metabase, tags: ["metabase", "monitoring"] }
+    - { role: crowdsec, tags: ["crowdsec", "security"] }

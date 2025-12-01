@@ -1,0 +1,5 @@
+- name: Restart crowdsec stack
+  community.docker.docker_compose_v2:
+    project_src: "{{ docker_config_root }}/crowdsec"
+    state: present
+    recreate: always

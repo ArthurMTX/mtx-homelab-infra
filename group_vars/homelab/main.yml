@@ -15,5 +15,7 @@ vpn_hostname: "vpn.mtx.dev"
 
 database_hostname: "database.mtx.dev"
 
+metabase_hostname: "metabase.mtx.dev"
+
 timezone: "Europe/Paris"
 domain: "mtx.dev"

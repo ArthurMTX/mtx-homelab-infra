@@ -1,0 +1,31 @@
+- name: Ensure crowdsec base directory exists
+  ansible.builtin.file:
+    path: "{{ docker_config_root }}/crowdsec"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Deploy crowdsec acquis.yaml
+  ansible.builtin.template:
+    src: acquis.yaml.j2
+    dest: "{{ docker_config_root }}/crowdsec/acquis.yaml"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart crowdsec stack
+
+- name: Deploy crowdsec docker-compose.yml
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ docker_config_root }}/crowdsec/docker-compose.yml"
+    owner: root
+    group: root
+    mode: "0640"
+  notify: Restart crowdsec stack
+
+- name: Ensure crowdsec stack is running
+  community.docker.docker_compose_v2:
+    project_src: "{{ docker_config_root }}/crowdsec"
+    state: present
+    recreate: never

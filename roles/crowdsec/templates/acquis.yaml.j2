@@ -1,0 +1,10 @@
+filenames:
+  - /var/log/secure
+  - /var/log/messages
+labels:
+  type: syslog
+---
+filenames:
+  - /var/log/traefik/*
+labels:
+  type: traefik
