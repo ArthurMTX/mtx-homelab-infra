@@ -4,4 +4,4 @@ ports:
   uptime_kuma:
     http: 3001
   apache:
-    http: 8080
+    http: 80
