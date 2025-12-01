@@ -40,3 +40,9 @@
     group: root
     mode: "0600"
   notify: Restart homepage
+
+- name: Ensure homepage stack is running
+  community.docker.docker_compose_v2:
+    project_src: "{{ docker_config_root }}/homepage"
+    state: present
+    recreate: never

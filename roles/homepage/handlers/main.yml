@@ -2,5 +2,5 @@
   community.docker.docker_compose_v2:
     project_src: "{{ docker_config_root }}/homepage"
     state: present
-    recreate: auto
+    recreate: always
     remove_orphans: true
