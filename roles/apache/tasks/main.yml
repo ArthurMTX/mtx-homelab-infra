@@ -1,0 +1,40 @@
+- name: Ensure apache base directory exists
+  ansible.builtin.file:
+    path: "{{ docker_config_root }}/apache"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Ensure apache web directory exists
+  ansible.builtin.file:
+    path: "{{ docker_config_root }}/apache/web"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Sync apache web content
+  ansible.builtin.copy:
+    src: "web/"
+    dest: "{{ docker_config_root }}/apache/web/"
+    owner: root
+    group: root
+    mode: "0644"
+    directory_mode: "0755"
+  notify: Restart apache
+
+- name: Deploy apache docker-compose.yml
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ docker_config_root }}/apache/docker-compose.yml"
+    owner: root
+    group: root
+    mode: "0640"
+  notify: Restart apache
+
+- name: Ensure apache stack is running
+  community.docker.docker_compose_v2:
+    project_src: "{{ docker_config_root }}/apache"
+    state: present
+    recreate: never

@@ -1,0 +1,6 @@
+- name: Restart apache
+  community.docker.docker_compose_v2:
+    project_src: "{{ docker_config_root }}/apache"
+    state: present
+    recreate: always
+    remove_orphans: true

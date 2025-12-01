@@ -1,0 +1,27 @@
+services:
+  web:
+    image: php:7.4-apache
+    container_name: apache-web
+    restart: always
+
+    ports:
+      - "8080:80"
+
+    volumes:
+      - "{{ docker_config_root }}/apache/web:/var/www/html"
+
+    environment:
+      APACHE_DOCUMENT_ROOT: /var/www/html
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.web.rule=Host(`{{ apache_hostname }}`)"
+      - "traefik.http.routers.web.entrypoints=websecure"
+      - "traefik.http.routers.web.tls.certresolver=lets-encrypt"
+
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
