@@ -7,8 +7,8 @@ services:
       - COLLECTIONS=crowdsecurity/traefik crowdsecurity/http-cve crowdsecurity/whitelist-good-actors crowdsecurity/iptables crowdsecurity/linux crowdsecurity/nginx crowdsecurity/sshd
       - CUSTOM_HOSTNAME=crowdsec
     volumes:
-      - crowdsec_config:/etc/crowdsec
-      - crowdsec_db:/var/lib/crowdsec/data
+      - /etc/docker/crowdsec/config:/etc/crowdsec
+      - /etc/docker/crowdsec/data:/var/lib/crowdsec/data
       - "{{ docker_config_root }}/crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml:rw"
       - /var/log/:/var/log:rw
       - "{{ docker_config_root }}/traefik/log/traefik/:/var/log/traefik:rw"
@@ -40,4 +40,3 @@ networks:
 
 volumes:
   crowdsec_config:
-  crowdsec_db:
