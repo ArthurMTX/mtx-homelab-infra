@@ -19,4 +19,4 @@
     - { role: metabase, tags: ["metabase"] }
     - { role: crowdsec, tags: ["crowdsec"] }
     - { role: monitoring, tags: ["monitoring"] }
-
+    - { role: n8n, tags: ["n8n"] }

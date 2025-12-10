@@ -34,3 +34,5 @@ ports:
     http: 8081
   alertrelay:
     http: 8082
+  n8n:
+    http: 5678
