@@ -45,6 +45,7 @@ query_range:
         max_size_mb: 128
 
 limits_config:
+  retention_period: 7d
   ingestion_rate_mb: 16
   ingestion_burst_size_mb: 32
   max_streams_per_user: 0
@@ -56,3 +57,6 @@ compactor:
   compactor_ring:
     kvstore:
       store: inmemory
+  
+  retention_enabled: true
+  delete_request_store: filesystem

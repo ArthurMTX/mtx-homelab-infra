@@ -3,12 +3,15 @@ services:
     image: prom/prometheus:latest
     container_name: prometheus
     restart: unless-stopped
+    user: "65534:65534"
     volumes:
       - "{{ docker_config_root }}/monitoring/prometheus:/etc/prometheus:ro"
       - "{{ docker_config_root }}/monitoring/data/prometheus:/prometheus"
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=7d
+      - --storage.tsdb.retention.size=5GB
       - --web.enable-lifecycle
     ports:
       - "127.0.0.1:{{ ports.prometheus.http }}:9090"
